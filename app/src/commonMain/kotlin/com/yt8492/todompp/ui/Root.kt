@@ -12,6 +12,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.yt8492.todompp.ui.component.TodoCreateView
+import com.yt8492.todompp.ui.component.TodoListView
+import com.yt8492.todompp.ui.component.TodoView
 import com.yt8492.todompp.ui.model.Todo
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -75,13 +77,12 @@ fun Root() {
             Spacer(Modifier.height(400.dp))
         }
     ) {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-        ) {
-            items(todos, key = { it.id }) {
-                Text(it.title)
+        TodoListView(
+            todos = todos,
+            onClickTodo = {
+
             }
-        }
+        )
     }
 }
 
