@@ -127,7 +127,7 @@ kotlin {
 
 compose.desktop {
     application {
-        mainClass = "Main_desktopKt"
+        mainClass = "com.yt8492.todompp.jvm.MainKt"
     }
 }
 
