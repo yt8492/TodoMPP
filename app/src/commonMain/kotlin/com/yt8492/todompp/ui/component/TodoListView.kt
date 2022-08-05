@@ -16,7 +16,10 @@ fun TodoListView(
         modifier = Modifier.fillMaxSize(),
     ) {
         items(todos, key = { it.id }) {
-            TodoView(it)
+            TodoView(
+                todo = it,
+                onClickTodo = onClickTodo,
+            )
         }
     }
 }

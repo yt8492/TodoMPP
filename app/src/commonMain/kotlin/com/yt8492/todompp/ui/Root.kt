@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.yt8492.todompp.ui.component.TodoCreateView
+import com.yt8492.todompp.ui.component.TodoDetailView
 import com.yt8492.todompp.ui.component.TodoListView
 import com.yt8492.todompp.ui.component.TodoView
 import com.yt8492.todompp.ui.model.Todo
@@ -21,7 +22,7 @@ import com.yt8492.todompp.ui.model.Todo
 fun Root() {
     val scaffoldState = rememberBottomSheetScaffoldState()
     val (modalState, setModalState) = remember {
-        mutableStateOf(ModalState.Closed)
+        mutableStateOf<ModalState>(ModalState.Closed)
     }
     val (todos, setTodos) = remember {
         mutableStateOf(listOf<Todo>())
@@ -53,7 +54,7 @@ fun Root() {
         },
         sheetContent = {
             when (modalState) {
-                ModalState.Create -> {
+                is ModalState.Create -> {
                     TodoCreateView(
                         onCreate = { title, content ->
                             val todo = Todo(
@@ -69,10 +70,29 @@ fun Root() {
                         },
                     )
                 }
-                ModalState.Detail -> {
-
+                is ModalState.Detail -> {
+                    TodoDetailView(
+                        todo = modalState.todo,
+                        onUpdate = { updated ->
+                            setTodos(todos.map {
+                                if (it.id == updated.id) {
+                                    updated
+                                } else {
+                                    it
+                                }
+                            })
+                            setModalState(ModalState.Closed)
+                        },
+                        onDelete = { deleted ->
+                            setTodos(todos - deleted)
+                            setModalState(ModalState.Closed)
+                        },
+                        onClose = {
+                            setModalState(ModalState.Closed)
+                        }
+                    )
                 }
-                ModalState.Closed -> {}
+                is ModalState.Closed -> {}
             }
             Spacer(Modifier.height(400.dp))
         }
@@ -80,14 +100,14 @@ fun Root() {
         TodoListView(
             todos = todos,
             onClickTodo = {
-
+                setModalState(ModalState.Detail(it))
             }
         )
     }
 }
 
-enum class ModalState {
-    Create,
-    Detail,
-    Closed
+sealed interface ModalState {
+    object Create : ModalState
+    data class Detail(val todo: Todo) : ModalState
+    object Closed: ModalState
 }

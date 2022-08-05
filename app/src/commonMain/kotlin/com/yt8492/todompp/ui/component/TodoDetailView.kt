@@ -9,17 +9,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.yt8492.todompp.ui.model.Todo
 
 @Composable
-fun TodoCreateView(
-    onCreate: (title: String, content: String) -> Unit,
-    onCancel: () -> Unit,
+fun TodoDetailView(
+    todo: Todo,
+    onUpdate: (Todo) -> Unit,
+    onDelete: (Todo) -> Unit,
+    onClose: () -> Unit,
 ) {
     val (title, setTitle) = remember {
-        mutableStateOf("")
+        mutableStateOf(todo.title)
     }
     val (content, setContent) = remember {
-        mutableStateOf("")
+        mutableStateOf(todo.content)
     }
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -30,7 +33,6 @@ fun TodoCreateView(
             placeholder = {
                 Text("Title")
             },
-
         )
         TextField(
             value = content,
@@ -42,17 +44,25 @@ fun TodoCreateView(
         )
         Row {
             Button(
-                onClick = onCancel,
+                onClick = onClose,
             ) {
-                Text("Cancel")
+                Text("Close")
             }
             Spacer(modifier = Modifier.width(16.dp))
             Button(
                 onClick = {
-                    onCreate(title, content)
+                    onDelete(todo)
+                }
+            ) {
+                Text("Delete")
+            }
+            Spacer(modifier = Modifier.width(16.dp))
+            Button(
+                onClick = {
+                    onUpdate(todo.copy(title = title, content = content))
                 },
             ) {
-                Text("Create")
+                Text("Update")
             }
         }
     }
