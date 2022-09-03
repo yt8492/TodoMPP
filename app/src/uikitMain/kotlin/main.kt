@@ -28,7 +28,7 @@ class SkikoAppDelegate : UIResponder, UIApplicationDelegateProtocol {
     }
 
     override fun application(application: UIApplication, didFinishLaunchingWithOptions: Map<Any?, *>?): Boolean {
-        window = UIWindow(frame = UIScreen.mainScreen.bounds).apply {
+        window = UIWindow(frame = UIScreen.mainScreen.applicationFrame).apply {
             rootViewController = Application("Chat") {
                 Root()
             }
