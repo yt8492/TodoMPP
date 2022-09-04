@@ -1,5 +1,5 @@
 import androidx.compose.ui.window.Window
-import com.yt8492.todompp.ui.Root
+import com.yt8492.todompp.ui.TodoRootView
 import kotlinx.browser.document
 import org.jetbrains.skiko.wasm.onWasmReady
 
@@ -10,7 +10,7 @@ fun main() {
     canvas.setAttribute("height", root.clientHeight.toString())
     onWasmReady {
         Window {
-            Root()
+            TodoRootView()
         }
     }
 }
